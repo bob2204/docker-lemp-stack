@@ -46,3 +46,10 @@ networks:
 
 volumes:
   datadb:
+
+  htmlnfs:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: addr=192.168.56.200,vers=4.2
+      device: ":/html"
