@@ -1,6 +1,6 @@
 # Formation Docker (2023-01-16 au 2023-01-20)
 
-## Déploiement d'une stacke LEMP
+## Déploiement d'une stack LEMP
 
 ***Commandes utiles***
 ```
