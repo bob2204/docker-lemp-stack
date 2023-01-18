@@ -5,7 +5,7 @@ services:
     container_name: www
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
-      - ./html:/usr/share/nginx/html
+      - htmlnfs:/usr/share/nginx/html
     ports:
       - 80:80
     networks:
@@ -19,7 +19,7 @@ services:
       context: .
     container_name: php
     volumes:
-      - ./html:/srv
+      - htmlnfs:/srv
     networks:
       lempnet:
     depends_on:
@@ -32,7 +32,7 @@ services:
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - MARIADB_DATABASE=stage
     volumes:
-      - ./datadir:/var/lib/mysql
+      - datadb:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
     networks:
       lempnet:
@@ -43,3 +43,6 @@ networks:
       config:
         - subnet: ${LEMPNET_PREFIX}.0/24
           gateway: ${LEMPNET_PREFIX}.254
+
+volumes:
+  datadb:
