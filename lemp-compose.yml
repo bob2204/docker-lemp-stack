@@ -1,0 +1,43 @@
+---
+services:
+  www:
+    image: nginx:${NGINX_VERSION}
+    container_name: www
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+      - ./html:/usr/share/nginx/html
+    ports:
+      - 80:80
+    networks:
+      lempnet:
+    depends_on:
+      - php
+
+  php:
+    image: php-mysql:${PHP_VERSION}
+    container_name: php
+    volumes:
+      - ./html:/srv
+    networks:
+      lempnet:
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: db
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=stage
+    volumes:
+      - ./datadir:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      lempnet:
+
+networks:
+  lempnet:
+    ipam:
+      config:
+        - subnet: ${LEMPNET_PREFIX}.0/24
+          gateway: ${LEMPNET_PREFIX}.254
